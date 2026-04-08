@@ -14,7 +14,7 @@ void Signal::definirAmostra(int indice, double valor) {
 void Signal::plotar(const std::string& titulo) const {
     std::cout << "\n--- " << titulo << " ---" << std::endl;
     for (int i = 0; i < (int)dados.size(); ++i) {
-        std::cout << "n=" << i << " | ";
+        std::cout << "n=" << std::setw(2) << i << " | ";
         int barras = static_cast<int>(std::abs(dados[i]));
         for (int j = 0; j < barras; ++j) std::cout << "#";
         std::cout << " (" << dados[i] << ")" << std::endl;
