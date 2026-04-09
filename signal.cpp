@@ -12,13 +12,45 @@ void Signal::definirAmostra(int indice, double valor) {
 }
 
 void Signal::plotar(const std::string& titulo) const {
-    std::cout << "\n--- " << titulo << " ---" << std::endl;
-    for (int i = 0; i < (int)dados.size(); ++i) {
-        std::cout << "n=" << std::setw(2) << i << " | ";
-        int barras = static_cast<int>(std::abs(dados[i]));
-        for (int j = 0; j < barras; ++j) std::cout << "#";
-        std::cout << " (" << dados[i] << ")" << std::endl;
+    std::cout << "\n>>> " << titulo << " <<<" << std::endl;
+
+    if (dados.empty()) return;
+
+    double maxAmp = 0, minAmp = 0;
+    for (double v : dados) {
+        if (v > maxAmp) maxAmp = v;
+        if (v < minAmp) minAmp = v;
     }
+
+    int altura = static_cast<int>(maxAmp - minAmp) + 2;
+    if (altura < 5) altura = 5;
+
+    for (int y = altura; y >= -1; --y) {
+        if (y >= 0) std::cout << std::setw(3) << y + (int)minAmp << " | ";
+        else std::cout << "    | ";
+
+        for (int x = 0; x < (int)dados.size(); ++x) {
+            int valorNormalizado = static_cast<int>(dados[x] - minAmp);
+            
+            if (y == valorNormalizado) {
+                std::cout << " o "; 
+            } else if (y == -1) {
+                std::cout << "---"; 
+            } else if (y >= 0 && y < valorNormalizado) {
+                 std::cout << " | "; 
+            } else {
+                std::cout << "   "; 
+            }
+        }
+        std::cout << std::endl;
+    }
+
+   
+    std::cout << "      ";
+    for (int x = 0; x < (int)dados.size(); ++x) {
+        std::cout << std::setw(2) << x << " ";
+    }
+    std::cout << "\n" << std::endl;
 }
 
 Signal Signal::refletir() const {
